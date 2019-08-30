@@ -9,11 +9,14 @@ public:
     neironHidden(double value, int aaa);
     neironHidden();
     void ActivationFunction();
+    //template < typename T >
+    void Adder(std::vector <neironHidden> &neirin);
+    void Adder(std::vector <Neiron> &neirin);
 
 private:
     //int quantityInput;              //количество нейронов в превидущем слое
 
-    std::vector<int> arrArrweights;
+    std::vector<double> arrArrweights;
 };
 
 #endif // NEIRONHIDDEN_H

@@ -1,7 +1,7 @@
 #include "neironhidden.h"
 #include <iostream>
 
-neironHidden::neironHidden(double value, int inputQuantityNeiron) : Neiron (value)
+NeironHidden::NeironHidden(double value, int inputQuantityNeiron) : Neiron (value)
 {
     //массив весов
 
@@ -12,14 +12,14 @@ neironHidden::neironHidden(double value, int inputQuantityNeiron) : Neiron (valu
     }
 }
 
-neironHidden::neironHidden():Neiron (0)     //конструктор по умалчанию для вектора
+NeironHidden::NeironHidden():Neiron (0)     //конструктор по умалчанию для вектора
 {
 
 }
 
 
 //template < typename T >
-void neironHidden::Adder(std::vector <neironHidden> &neiron)
+void NeironHidden::Adder(std::vector <NeironHidden> &neiron)
 {
 
     for(unsigned int i = 0; i < neiron.size(); i++)
@@ -32,7 +32,7 @@ void neironHidden::Adder(std::vector <neironHidden> &neiron)
     ActivationFunction();
 }
 
-void neironHidden::Adder(std::vector <Neiron> &neiron)
+void NeironHidden::Adder(std::vector <Neiron> &neiron)
 {
     for(unsigned int i = 0; i < neiron.size(); i++)
     {
@@ -46,9 +46,9 @@ void neironHidden::Adder(std::vector <Neiron> &neiron)
 
 
 
-void neironHidden::ActivationFunction()
+void NeironHidden::ActivationFunction()
 {
-    if(value > 1.5)   sost = true;
+    if(value > 1)   sost = true;
 
     else            sost = false;
 }

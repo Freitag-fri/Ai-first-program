@@ -3,14 +3,14 @@
 #include <neiron.h>
 #include <vector>
 
-class neironHidden: public Neiron
+class NeironHidden: public Neiron
 {
 public:
-    neironHidden(double value, int aaa);
-    neironHidden();
+    NeironHidden(double value, int aaa);
+    NeironHidden();
     void ActivationFunction();
     //template < typename T >
-    void Adder(std::vector <neironHidden> &neirin);
+    void Adder(std::vector <NeironHidden> &neirin);
     void Adder(std::vector <Neiron> &neirin);
 
 private:

@@ -8,10 +8,11 @@ public:
     Neiron(double value)
     {
         this->value = value;
-        sost = true;
+        sost = false;
     }
 
     void SetValue(double value)     {this->value = value;}
+    void SetSost(bool sost)     {this->sost = sost;}
     double GetValue()   {return  value;}
     bool GetSost()      {return  sost;}
 

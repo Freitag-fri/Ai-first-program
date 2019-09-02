@@ -21,12 +21,12 @@ NeironHidden::NeironHidden():Neiron (0)     //конструктор по ума
 //template < typename T >
 void NeironHidden::Adder(std::vector <NeironHidden> &neiron)
 {
-
+    SetValue(0);                                                //обнуляем значение нейрона
     for(unsigned int i = 0; i < neiron.size(); i++)
     {
         if (neiron[i].sost)
         {
-           value += neiron[i].value *  arrArrweights[i];
+            value += neiron[i].value *  arrArrweights[i];
         }
     }
     ActivationFunction();
@@ -34,17 +34,26 @@ void NeironHidden::Adder(std::vector <NeironHidden> &neiron)
 
 void NeironHidden::Adder(std::vector <Neiron> &neiron)
 {
+    SetValue(0);                                                //обнуляем значение нейрона
     for(unsigned int i = 0; i < neiron.size(); i++)
     {
         if (neiron[i].GetSost())
         {
-           value += neiron[i].GetValue() *  arrArrweights[i];
+            value += neiron[i].GetValue() *  arrArrweights[i];
         }
     }
     ActivationFunction();
+
 }
 
-
+//void NeironHidden::ZeroingValue(std::vector <NeironHidden> &neiron)
+//{
+//    for(unsigned int i = 0; i < neiron.size(); i++)
+//    {
+//        neiron[i].SetValue(0);
+//        neiron[i].SetSost(false);
+//    }
+//}
 
 void NeironHidden::ActivationFunction()
 {

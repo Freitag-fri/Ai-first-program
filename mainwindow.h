@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include <neironhidden.h>
+#include <QLineEdit>
+#include <vector>
+
 
 namespace Ui {
 class MainWindow;
@@ -16,7 +19,9 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void CreateNeiron();
+    void CreateLineEdit();
     void ResultPrint();
+    void DesiredValue();
 
 private slots:
     void on_pushButton_clicked();
@@ -30,10 +35,16 @@ private slots:
     void on_checkBox_3_clicked();
 
 private:
+
+    int desiredValue = 0;
+
     Ui::MainWindow *ui;
 
     static const int quantityLayer = 4;                     //количество слоёв
-    const int quantityNeiron[quantityLayer] = {4,8,15,16};      //количество нейронов в каждом слое
+    static const int outputLayer = 16;                      //выходной слой
+    const int quantityNeiron[quantityLayer] = {4, 8, 15, outputLayer};      //количество нейронов в каждом слое
+
+    QLineEdit  *arrLineEdit[outputLayer];
     std::vector <std::vector <NeironHidden>> arrAI;
     std::vector <Neiron> inputLayer;
 };

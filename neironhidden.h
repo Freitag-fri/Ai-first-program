@@ -13,6 +13,8 @@ public:
     void Adder(std::vector <NeironHidden> &neirin);
     void Adder(std::vector <Neiron> &neirin);
 
+  //  void ZeroingValue(std::vector <NeironHidden> &neiron);
+
 private:
     //int quantityInput;              //количество нейронов в превидущем слое
 

@@ -28,12 +28,14 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
         neiron2.cpp \
-        neironhidden.cpp
+        neironhidden.cpp \
+        neuralnetwork.cpp
 
 HEADERS += \
         mainwindow.h \
         neiron.h \
-        neironhidden.h
+        neironhidden.h \
+        neuralnetwork.h
 
 FORMS += \
         mainwindow.ui

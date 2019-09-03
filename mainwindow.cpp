@@ -10,16 +10,23 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    CreateNeiron();
+    // CreateNeiron();
     CreateLineEdit();
-    //    QPushButton* but = new QPushButton(this);
-    //    but->resize(75,23);   //размер
-    //    but->move(55,55);       //координаты
+    NeuralNetwork firstNeiron;
 }
 
-void MainWindow::CreateLineEdit()
+void MainWindow::CreateLineEdit()               //отображение выходных значений
 {
-    for (int i = 0; i < outputLayer; i++)
+    for (int i = 0; i < 4; i++)
+    {
+        QCheckBox* box = new QCheckBox(this);
+        box->resize(75,22);                             //размер
+        box->move(100,140+(20*i));                               //координаты
+        box->setText(QString::number(i));
+        arrCheckBox[i] = box;
+    }
+
+    for (int i = 0; i < NeuralNetwork::outputLayer; i++)
     {
         QLineEdit* line = new QLineEdit(this);
         line->resize(75,22);                             //размер
@@ -28,23 +35,23 @@ void MainWindow::CreateLineEdit()
     }
 }
 
-void MainWindow::CreateNeiron()                     //создание нейронов
-{
-    for (int i = 0; i < quantityNeiron[0]; i++)     //входной слой
-    {
-        inputLayer.push_back(Neiron(0));
-    }
+//void MainWindow::CreateNeiron()                     //создание нейронов
+//{
+//    for (int i = 0; i < quantityNeiron[0]; i++)     //входной слой
+//    {
+//        inputLayer.push_back(Neiron(0));
+//    }
 
-    for (int i = 1; i < quantityLayer; i++)         //скрытый и выходной слой
-    {
-        std::vector <NeironHidden> *layer = new std::vector <NeironHidden>;
-        for (int c = 0; c < quantityNeiron[i]; c++)
-        {
-            layer->push_back(NeironHidden (0, quantityNeiron[i-1]));
-        }
-        arrAI.push_back(*layer);
-    }
-}
+//    for (int i = 1; i < quantityLayer; i++)         //скрытый и выходной слой
+//    {
+//        std::vector <NeironHidden> *layer = new std::vector <NeironHidden>;
+//        for (int c = 0; c < quantityNeiron[i]; c++)
+//        {
+//            layer->push_back(NeironHidden (0, quantityNeiron[i-1]));
+//        }
+//        arrAI.push_back(*layer);
+//    }
+//}
 
 MainWindow::~MainWindow()
 {
@@ -55,42 +62,41 @@ void MainWindow::on_pushButton_clicked()
 {
     DesiredValue();
 
-    for (int c = 0; c < quantityNeiron[1]; c++)    //обрабатываем 1-й скрытый слой
-    {
-        arrAI[0][c].Adder(inputLayer);
-    }
+    firstNeiron.StartWork();
 
-    for (int i = 1; i < quantityLayer-1; i++)        //обрабатываем остальные  слои
-    {
-        for (int c = 0; c < quantityNeiron[i+1]; c++)
-        {
-            arrAI[i][c].Adder(arrAI[i-1]);
-        }
-    }
-
-    ResultPrint();
+     ResultPrint();
 }
 
 void MainWindow::ResultPrint()
 {
-    for(int i = 0; i < outputLayer; ++i)
+    for(int i = 0; i < NeuralNetwork::outputLayer; ++i)
     {
-        arrLineEdit[i]->setText(QString::number(arrAI[quantityLayer-2][i].GetValue()));
+        arrLineEdit[i]->setText(QString::number(firstNeiron.arrAI[NeuralNetwork::quantityLayer-2][i].GetValue()));
     }
 }
 
 void MainWindow::DesiredValue()
 {
-    desiredValue = 0;
-    for (unsigned int i = 0; i < inputLayer.size(); i++)
+    ////////////////////////////////////////////////////////////////
+    for (int i = 0; i < 4; i++)
     {
-        if(inputLayer[i].GetSost() && i == 0)
+       firstNeiron.inputLayer[i].SetValue(arrCheckBox[i]->isChecked());
+       firstNeiron.inputLayer[i].SetSost(arrCheckBox[i]->isChecked());
+    }
+
+
+    ////////////////////////////////////////////////////////////////////
+
+    desiredValue = 0;
+    for (int i = 0; i < NeuralNetwork::quantityNeiron[0]; i++)
+    {
+        if(arrCheckBox[i]->isChecked() && i == 0)
         {
-          desiredValue ++;
+            desiredValue ++;
         }
-        else if(inputLayer[i].GetSost())
+        else if(arrCheckBox[i]->isChecked())
         {
-          desiredValue += pow(2,i);
+            desiredValue += pow(2,i);
         }
     }
     ui->lineEdit_4->setText(QString::number(desiredValue));
@@ -98,28 +104,28 @@ void MainWindow::DesiredValue()
 
 void MainWindow::on_checkBox_0_clicked()
 {
-    inputLayer[0].SetValue(ui->checkBox_0->isChecked());
-    inputLayer[0].SetSost(ui->checkBox_0->isChecked());
-    DesiredValue();
+    //    inputLayer[0].SetValue(ui->checkBox_0->isChecked());
+    //    inputLayer[0].SetSost(ui->checkBox_0->isChecked());
+    //    DesiredValue();
 }
 
 void MainWindow::on_checkBox_1_clicked()
 {
-    inputLayer[1].SetValue(ui->checkBox_1->isChecked());
-    inputLayer[1].SetSost(ui->checkBox_1->isChecked());
-    DesiredValue();
+    //    inputLayer[1].SetValue(ui->checkBox_1->isChecked());
+    //    inputLayer[1].SetSost(ui->checkBox_1->isChecked());
+    //    DesiredValue();
 }
 
 void MainWindow::on_checkBox_2_clicked()
 {
-    inputLayer[2].SetValue(ui->checkBox_2->isChecked());
-    inputLayer[2].SetSost(ui->checkBox_2->isChecked());
-    DesiredValue();
+    //    inputLayer[2].SetValue(ui->checkBox_2->isChecked());
+    //    inputLayer[2].SetSost(ui->checkBox_2->isChecked());
+    //    DesiredValue();
 }
 
 void MainWindow::on_checkBox_3_clicked()
 {
-    inputLayer[3].SetValue(ui->checkBox_3->isChecked());
-    inputLayer[3].SetSost(ui->checkBox_3->isChecked());
-    DesiredValue();
+    //    inputLayer[3].SetValue(ui->checkBox_3->isChecked());
+    //    inputLayer[3].SetSost(ui->checkBox_3->isChecked());
+    //    DesiredValue();
 }

@@ -5,16 +5,13 @@
 class Neiron
 {
 public:
-    Neiron(double value)
-    {
-        this->value = value;
-        sost = false;
-    }
+    Neiron(double value);
 
-    void SetValue(double value)     {this->value = value;}
-    void SetSost(bool sost)     {this->sost = sost;}
-    double GetValue()   {return  value;}
-    bool GetSost()      {return  sost;}
+    void SetValue(double value);
+    void SetSost(bool sost);
+
+    double  GetValue();
+    bool    GetSost();
 
 protected:
     double value;

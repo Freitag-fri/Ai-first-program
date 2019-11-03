@@ -27,7 +27,7 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-        neiron2.cpp \
+        neiron.cpp \
         neironhidden.cpp \
         neuralnetwork.cpp
 

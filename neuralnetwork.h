@@ -1,5 +1,6 @@
 #ifndef NEURALNETWORK_H
 #define NEURALNETWORK_H
+
 #include <vector>
 #include <QLineEdit>
 #include <iostream>
@@ -9,6 +10,7 @@
 class NeuralNetwork : public NeironHidden
 {
 public:
+
     NeuralNetwork();
     void CreateNeiron();
     void StartWork();
@@ -21,5 +23,6 @@ public:
     std::vector <std::vector <NeironHidden>> arrAI;
     std::vector <Neiron> inputLayer;
 };
+
 
 #endif // NEURALNETWORK_H

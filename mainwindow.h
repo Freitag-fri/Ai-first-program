@@ -1,13 +1,15 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+
 #include <QMainWindow>
 #include <neironhidden.h>
 #include <QLineEdit>
-#include <vector>
+#include <array>
 #include <neuralnetwork.h>
 #include <QCheckBox>
 
+//constexpr int sizeNetWork = 5;
 
 namespace Ui {
 class MainWindow;
@@ -22,6 +24,8 @@ public:
     ~MainWindow();
     //void CreateNeiron();
     void CreateLineEdit();
+    void CreateNetwork();
+
     void ResultPrint();
     void DesiredValue();
 
@@ -40,6 +44,8 @@ private:
 
     int desiredValue = 0;       //нужное число
 
+
+
     Ui::MainWindow *ui;
 
 //    static const int quantityLayer = 4;                     //количество слоёв
@@ -49,10 +55,11 @@ private:
     QLineEdit  *arrLineEdit[NeuralNetwork::outputLayer];
 //    std::vector <std::vector <NeironHidden>> arrAI;
 //    std::vector <Neiron> inputLayer;
-    std::vector<NeuralNetwork> network;
-    QCheckBox *arrCheckBox[4];
+    std::array<NeuralNetwork*, 5> networkVec;
+    std::array<QCheckBox*, 4> arrCheckBox;
 
     NeuralNetwork firstNeiron;          //нейронная сеть
+
 };
 
 #endif // MAINWINDOW_H

@@ -12,16 +12,32 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     // CreateNeiron();
     CreateLineEdit();
-    NeuralNetwork firstNeiron;
+    CreateNetwork();
+}
+
+MainWindow::~MainWindow()
+{
+   // delete networkVec;
+
+    delete ui;
+}
+
+void MainWindow::CreateNetwork()
+{
+    for(size_t i = 0; i < networkVec.size(); i++)
+    {
+        NeuralNetwork *network = new NeuralNetwork;
+        networkVec[i] = network;
+    }
 }
 
 void MainWindow::CreateLineEdit()               //отображение выходных значений
 {
-    for (int i = 0; i < 4; i++)
+    for (size_t i = 0; i < 4; i++)
     {
         QCheckBox* box = new QCheckBox(this);
         box->resize(75,22);                             //размер
-        box->move(100,140+(20*i));                               //координаты
+        box->move(100,140 + (20*i));                               //координаты
         box->setText(QString::number(i));
         arrCheckBox[i] = box;
     }
@@ -53,42 +69,43 @@ void MainWindow::CreateLineEdit()               //отображение вых�
 //    }
 //}
 
-MainWindow::~MainWindow()
-{
-    delete ui;
-}
+
 
 void MainWindow::on_pushButton_clicked()
 {
     DesiredValue();
-
+networkVec[0]->StartWork();     //добавить работу всех сетей!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     firstNeiron.StartWork();
 
-     ResultPrint();
+    ResultPrint();
 }
 
 void MainWindow::ResultPrint()
 {
-    for(int i = 0; i < NeuralNetwork::outputLayer; ++i)
+    for(size_t i = 0; i < NeuralNetwork::outputLayer; ++i)
     {
-        arrLineEdit[i]->setText(QString::number(firstNeiron.arrAI[NeuralNetwork::quantityLayer-2][i].GetValue()));
+        arrLineEdit[i]->setText(QString::number(networkVec[0]->arrAI[NeuralNetwork::quantityLayer-2][i].GetValue()));
     }
 }
 
 void MainWindow::DesiredValue()
 {
     ////////////////////////////////////////////////////////////////
-    for (int i = 0; i < 4; i++)
+
+    for (size_t c = 0; c < networkVec.size(); c++)
     {
-       firstNeiron.inputLayer[i].SetValue(arrCheckBox[i]->isChecked());
-       firstNeiron.inputLayer[i].SetSost(arrCheckBox[i]->isChecked());
+        for (size_t i = 0; i < 4; i++)
+        {
+            networkVec[c]->inputLayer[i].SetValue(arrCheckBox[i]->isChecked());
+            networkVec[c]->inputLayer[i].SetSost(arrCheckBox[i]->isChecked());
+        }
     }
 
 
     ////////////////////////////////////////////////////////////////////
 
     desiredValue = 0;
-    for (int i = 0; i < NeuralNetwork::quantityNeiron[0]; i++)
+    for (size_t i = 0; i < NeuralNetwork::quantityNeiron[0]; i++)
     {
         if(arrCheckBox[i]->isChecked() && i == 0)
         {

@@ -23,5 +23,6 @@ double Neiron::GetValue()
 
 bool Neiron::GetSost()
 {
+    int test;
     return  sost;
 }

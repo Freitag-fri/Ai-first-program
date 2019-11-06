@@ -5,23 +5,21 @@
 #include <QLineEdit>
 #include <iostream>
 #include <neironhidden.h>
+#include <array>
 
-
-class NeuralNetwork : public NeironHidden
+class NeuralNetwork
 {
 public:
 
+    NeuralNetwork(std::vector<int> sizeLayers);
     NeuralNetwork();
     void CreateNeiron();
     void StartWork();
 
-//private:
-    static const int quantityLayer = 4;                     //количество слоёв
-    static const int outputLayer = 16;                      //выходной слой
-    static const int quantityNeiron[quantityLayer];      //количество нейронов в каждом слое
-
     std::vector <std::vector <NeironHidden>> arrAI;
     std::vector <Neiron> inputLayer;
+
+    std::vector<int> sizeLayers;
 };
 
 

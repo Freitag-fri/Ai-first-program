@@ -6,10 +6,9 @@
 class NeironHidden: public Neiron
 {
 public:
-    NeironHidden(double value, int aaa);
-    NeironHidden();
+    NeironHidden(int sizeLastLayer, double value = 0);
+ //   NeironHidden();
     void ActivationFunction();
-    //template < typename T >
     void Adder(std::vector <NeironHidden> &neirin);
     void Adder(std::vector <Neiron> &neirin);
 
@@ -18,7 +17,7 @@ public:
 private:
     //int quantityInput;              //количество нейронов в превидущем слое
 
-    std::vector<double> arrArrweights;
+    std::vector<double> arrArrweights;      //
 };
 
 #endif // NEIRONHIDDEN_H

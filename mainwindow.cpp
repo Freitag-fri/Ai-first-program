@@ -17,16 +17,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
-   // delete networkVec;
+    // delete networkVec;
 
     delete ui;
 }
 
 void MainWindow::CreateNetwork()
 {
+
     for(size_t i = 0; i < networkVec.size(); i++)
     {
-        NeuralNetwork *network = new NeuralNetwork;
+        NeuralNetwork *network = new NeuralNetwork(sizeNetwork);
         networkVec[i] = network;
     }
 }
@@ -36,63 +37,38 @@ void MainWindow::CreateLineEdit()               //отображение вых�
     for (size_t i = 0; i < 4; i++)
     {
         QCheckBox* box = new QCheckBox(this);
-        box->resize(75,22);                             //размер
-        box->move(100,140 + (20*i));                               //координаты
+        box->resize(75, 22);                             //размер
+        box->move(100, 140 + (20*i));                               //координаты
         box->setText(QString::number(i));
         arrCheckBox[i] = box;
     }
 
-    for (int i = 0; i < NeuralNetwork::outputLayer; i++)
+    for (int i = 0; i < OutputLayer; i++)
     {
         QLineEdit* line = new QLineEdit(this);
-        line->resize(75,22);                             //размер
-        line->move(250,40+(23*i));                               //координаты
+        line->resize(75, 22);                             //размер
+        line->move(250, 40+(23*i));                               //координаты
         arrLineEdit[i] = line;
     }
 }
-
-//void MainWindow::CreateNeiron()                     //создание нейронов
-//{
-//    for (int i = 0; i < quantityNeiron[0]; i++)     //входной слой
-//    {
-//        inputLayer.push_back(Neiron(0));
-//    }
-
-//    for (int i = 1; i < quantityLayer; i++)         //скрытый и выходной слой
-//    {
-//        std::vector <NeironHidden> *layer = new std::vector <NeironHidden>;
-//        for (int c = 0; c < quantityNeiron[i]; c++)
-//        {
-//            layer->push_back(NeironHidden (0, quantityNeiron[i-1]));
-//        }
-//        arrAI.push_back(*layer);
-//    }
-//}
-
 
 
 void MainWindow::on_pushButton_clicked()
 {
     DesiredValue();
-networkVec[0]->StartWork();     //добавить работу всех сетей!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    firstNeiron.StartWork();
+
+    SetValueInputLayer();
+    for(int i = 0; i < networkVec.size(); i++)
+    {
+        networkVec[i]->StartWork();
+    }
 
     ResultPrint();
 }
 
-void MainWindow::ResultPrint()
+void MainWindow::SetValueInputLayer()
 {
-    for(size_t i = 0; i < NeuralNetwork::outputLayer; ++i)
-    {
-        arrLineEdit[i]->setText(QString::number(networkVec[0]->arrAI[NeuralNetwork::quantityLayer-2][i].GetValue()));
-    }
-}
-
-void MainWindow::DesiredValue()
-{
-    ////////////////////////////////////////////////////////////////
-
-    for (size_t c = 0; c < networkVec.size(); c++)
+    for (size_t c = 0; c < networkVec.size(); c++)      // заполняем входной члой данными
     {
         for (size_t i = 0; i < 4; i++)
         {
@@ -100,12 +76,46 @@ void MainWindow::DesiredValue()
             networkVec[c]->inputLayer[i].SetSost(arrCheckBox[i]->isChecked());
         }
     }
+}
+
+void MainWindow::ResultPrint()              //вывод результата
+{
+    double sumValue = 0;
+    for(size_t i = 0; i < OutputLayer; ++i)         //подсчет суммы
+    {
+        sumValue += networkVec[1]->arrAI[sizeNetwork.size()-2][i].GetValue();
+    }
+
+
+    double buf = 0;
+    double Maxbuf = -1;
+    int bestElement = -1;
+    for(size_t i = 0; i < OutputLayer; ++i)         //подсчет %
+    {
+        buf = networkVec[1]->arrAI[sizeNetwork.size()-2][i].GetValue()*100/sumValue;
+        arrLineEdit[i]->setText(QString::number(buf));
+
+        if (buf > Maxbuf)
+        {
+            Maxbuf = buf;
+            bestElement = i;
+        }
+    }
+    ui->lineEdit_5->setText(QString::number(bestElement));
+//    for(size_t i = 0; i < OutputLayer; ++i)       //вывод значения
+//    {
+//        arrLineEdit[i]->setText(QString::number(networkVec[0]->arrAI[sizeNetwork.size()-2][i].GetValue()));
+//    }
+}
+
+void MainWindow::DesiredValue()         //считаем число которое должно получиться
+{
 
 
     ////////////////////////////////////////////////////////////////////
 
     desiredValue = 0;
-    for (size_t i = 0; i < NeuralNetwork::quantityNeiron[0]; i++)
+    for (size_t i = 0; i < InputLayer; i++)
     {
         if(arrCheckBox[i]->isChecked() && i == 0)
         {

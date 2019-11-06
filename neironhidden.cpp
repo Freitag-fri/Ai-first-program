@@ -34,13 +34,12 @@ void NeironHidden::Adder(std::vector <Neiron> &neiron)          //суммато
             value += neiron[i].GetValue() *  arrArrweights[i];
         }
     }
-    ActivationFunction();       //винести или нет :)
-
+    ActivationFunction();       //вынести или нет :)
 }
 
 void NeironHidden::ActivationFunction()
 {
-    if(value > 0.5)   sost = true;
+    if(value > 0.5) sost = true;
 
     else            sost = false;
 }

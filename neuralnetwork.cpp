@@ -8,7 +8,7 @@ NeuralNetwork::NeuralNetwork(std::vector<int> sizeLayers) : sizeLayers(sizeLayer
 NeuralNetwork::NeuralNetwork()
 {}
 
-void NeuralNetwork::CreateNeiron()                      //создание слойов
+void NeuralNetwork::CreateNeiron()                      //создание слоев
 {
     for (size_t i = 0; i < sizeLayers[0]; i++)         //создание и заполнение входного слоя
     {

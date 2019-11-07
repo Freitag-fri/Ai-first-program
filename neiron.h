@@ -13,7 +13,7 @@ public:
     double  GetValue();
     bool    GetSost();
 
-protected:
+//protected:
     double value;
     bool sost;
 };

@@ -10,14 +10,25 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    // CreateNeiron();
+    srand( time(0) );   //рандомные числа
     CreateLineEdit();
     CreateNetwork();
 }
 
 MainWindow::~MainWindow()
 {
-    // delete networkVec;
+    for(size_t i = 0; i < networkVec.size(); i++)
+    {
+        delete networkVec[i];
+    }
+    for(size_t i = 0; i < arrCheckBox.size(); i++)
+    {
+        delete arrCheckBox[i];
+    }
+    for(size_t i = 0; i < OutputLayer; i++)
+    {
+        delete arrLineEdit[i];
+    }
 
     delete ui;
 }
@@ -52,19 +63,41 @@ void MainWindow::CreateLineEdit()               //отображение вых�
     }
 }
 
+void MainWindow::on_pushButton_2_clicked()
+{
+    while(!stop)
+    {
+        if (rand()%2)
+        {arrCheckBox[rand()%4]->click();}
+        for(size_t i = 0; i < 50; i++)
+        {
+            on_pushButton_clicked();
+            MainWindow::update();               //обновление окна
+            QApplication::processEvents();      //
+            Sleep(25);
+        }
+
+    }
+
+}
 
 void MainWindow::on_pushButton_clicked()
 {
+
     DesiredValue();
 
     SetValueInputLayer();
-    for(int i = 0; i < networkVec.size(); i++)
+    for(size_t i = 0; i < networkVec.size(); i++)
     {
         networkVec[i]->StartWork();
     }
 
+
+
     ResultPrint();
+    InheritanceNetWork(BestNetWork());      //ищем лучшую сеть и переписываем её значения весов в другие сети
 }
+
 
 void MainWindow::SetValueInputLayer()
 {
@@ -78,12 +111,45 @@ void MainWindow::SetValueInputLayer()
     }
 }
 
+int MainWindow::BestNetWork()                   //поиск лучшей сети
+{
+    double bufValue;
+    double valueBestNetwork = 0;
+    int bestNetWork = -1;
+    for(int i = 0; i < networkVec.size(); i++)
+    {
+        bufValue = networkVec[i]->GetAccuracyValue(desiredValue);       //пулучаем значение сети
+
+        if (valueBestNetwork < bufValue)                                //поиск сети с лучшим значение
+        {
+            valueBestNetwork = bufValue;
+            bestNetWork = i;
+        }
+    }
+    return bestNetWork;                     //возвращаем порядковый номер сети
+}
+
+void MainWindow::InheritanceNetWork(int indexBestNetWork)
+{
+    for(size_t i = 0; i < networkVec.size(); i++)
+    {
+        for(size_t c = 0; c < sizeNetwork.size()-1; c++)
+        {
+            for(size_t q = 0; q < sizeNetwork[c+1]; q++)
+            {
+                networkVec[i]->arrAI[c][q] = networkVec[indexBestNetWork]->arrAI[c][q];
+                networkVec[i]->arrAI[c][q].Mutation();                                      //мутация
+            }
+        }
+    }
+}
+
 void MainWindow::ResultPrint()              //вывод результата
 {
     double sumValue = 0;
     for(size_t i = 0; i < OutputLayer; ++i)         //подсчет суммы
     {
-        sumValue += networkVec[1]->arrAI[sizeNetwork.size()-2][i].GetValue();
+        sumValue += networkVec[0]->arrAI[sizeNetwork.size()-2][i].GetValue();
     }
 
 
@@ -92,8 +158,8 @@ void MainWindow::ResultPrint()              //вывод результата
     int bestElement = -1;
     for(size_t i = 0; i < OutputLayer; ++i)         //подсчет %
     {
-        buf = networkVec[1]->arrAI[sizeNetwork.size()-2][i].GetValue()*100/sumValue;
-        arrLineEdit[i]->setText(QString::number(buf));
+        buf = networkVec[0]->arrAI[sizeNetwork.size()-2][i].GetValue()*100/sumValue;
+        arrLineEdit[i]->setText(QString::number(buf) + " %");
 
         if (buf > Maxbuf)
         {
@@ -101,19 +167,21 @@ void MainWindow::ResultPrint()              //вывод результата
             bestElement = i;
         }
     }
-    ui->lineEdit_5->setText(QString::number(bestElement));
-//    for(size_t i = 0; i < OutputLayer; ++i)       //вывод значения
-//    {
-//        arrLineEdit[i]->setText(QString::number(networkVec[0]->arrAI[sizeNetwork.size()-2][i].GetValue()));
-//    }
+
+    double percent = networkVec[BestNetWork()]->GetAccuracyValue(desiredValue);    //точность
+    ui->lineEdit_5->setText(QString::number(percent));
+
+    if(percent > 90)        //остановка подбора
+    {stop = true;}
+
+    //    for(size_t i = 0; i < OutputLayer; ++i)       //вывод значения
+    //    {
+    //        arrLineEdit[i]->setText(QString::number(networkVec[0]->arrAI[sizeNetwork.size()-2][i].GetValue()));
+    //    }
 }
 
 void MainWindow::DesiredValue()         //считаем число которое должно получиться
 {
-
-
-    ////////////////////////////////////////////////////////////////////
-
     desiredValue = 0;
     for (size_t i = 0; i < InputLayer; i++)
     {
@@ -156,3 +224,5 @@ void MainWindow::on_checkBox_3_clicked()
     //    inputLayer[3].SetSost(ui->checkBox_3->isChecked());
     //    DesiredValue();
 }
+
+

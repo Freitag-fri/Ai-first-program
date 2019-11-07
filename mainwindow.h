@@ -7,6 +7,7 @@
 #include <array>
 #include <neuralnetwork.h>
 #include <QCheckBox>
+#include <windows.h>
 
 namespace Ui {
 class MainWindow;
@@ -24,8 +25,10 @@ public:
     void CreateNetwork();
 
     void ResultPrint();
+    int BestNetWork();          //поиск лучшей сети
     void DesiredValue();
     void SetValueInputLayer();
+    void InheritanceNetWork(int indexBestNetWork);
 
 private slots:
     void on_pushButton_clicked();
@@ -38,6 +41,8 @@ private slots:
 
     void on_checkBox_3_clicked();
 
+    void on_pushButton_2_clicked();
+
 private:
     Ui::MainWindow *ui;
 
@@ -45,7 +50,9 @@ private:
 
     static const int InputLayer = 4;
     static const int OutputLayer = 16;
-    std::vector <int> sizeNetwork = {InputLayer, 6, 20, 25, OutputLayer};
+    std::vector <int> sizeNetwork = {InputLayer, 25, 50, 70, 90, 50, 60, 40, OutputLayer};
+
+    bool stop = false;
 
 
     QLineEdit  *arrLineEdit[OutputLayer];

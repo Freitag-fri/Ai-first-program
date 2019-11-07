@@ -11,13 +11,15 @@ public:
     void ActivationFunction();
     void Adder(std::vector <NeironHidden> &neirin);
     void Adder(std::vector <Neiron> &neirin);
+    void Mutation();
 
-  //  void ZeroingValue(std::vector <NeironHidden> &neiron);
+    NeironHidden &operator = (NeironHidden &other)
+    {
+        this->arrArrweights = other.arrArrweights;
+        return *this;
+    }
 
-private:
-    //int quantityInput;              //количество нейронов в превидущем слое
-
-    std::vector<double> arrArrweights;      //
+    std::vector<double> arrArrweights;      //массив векторов
 };
 
 #endif // NEIRONHIDDEN_H

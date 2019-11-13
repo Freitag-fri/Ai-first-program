@@ -5,7 +5,7 @@
 class Neiron
 {
 public:
-    Neiron(double value);
+    Neiron(double value = 1);
 
     void SetValue(double value);
     void SetSost(bool sost);
@@ -13,7 +13,7 @@ public:
     double  GetValue();
     bool    GetSost();
 
-protected:
+//protected:
     double value;
     bool sost;
 };

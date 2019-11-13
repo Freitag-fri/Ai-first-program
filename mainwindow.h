@@ -1,15 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-
 #include <QMainWindow>
 #include <neironhidden.h>
 #include <QLineEdit>
 #include <array>
 #include <neuralnetwork.h>
 #include <QCheckBox>
-
-//constexpr int sizeNetWork = 5;
+#include <windows.h>
 
 namespace Ui {
 class MainWindow;
@@ -27,7 +25,10 @@ public:
     void CreateNetwork();
 
     void ResultPrint();
+    int BestNetWork();          //поиск лучшей сети
     void DesiredValue();
+    void SetValueInputLayer();
+    void InheritanceNetWork(int indexBestNetWork);
 
 private slots:
     void on_pushButton_clicked();
@@ -40,26 +41,25 @@ private slots:
 
     void on_checkBox_3_clicked();
 
+    void on_pushButton_2_clicked();
+
 private:
+    Ui::MainWindow *ui;
 
     int desiredValue = 0;       //нужное число
 
+    static const int InputLayer = 4;
+    static const int OutputLayer = 16;
+    std::vector <int> sizeNetwork = {InputLayer, 25, 50, 70, 90, 50, 60, 40, OutputLayer};
+
+    bool stop = false;
 
 
-    Ui::MainWindow *ui;
-
-//    static const int quantityLayer = 4;                     //количество слоёв
-//    static const int outputLayer = 16;                      //выходной слой
-//    const int quantityNeiron[quantityLayer] = {4, 8, 15, outputLayer};      //количество нейронов в каждом слое
-
-    QLineEdit  *arrLineEdit[NeuralNetwork::outputLayer];
+    QLineEdit  *arrLineEdit[OutputLayer];
 //    std::vector <std::vector <NeironHidden>> arrAI;
 //    std::vector <Neiron> inputLayer;
     std::array<NeuralNetwork*, 5> networkVec;
     std::array<QCheckBox*, 4> arrCheckBox;
-
-    NeuralNetwork firstNeiron;          //нейронная сеть
-
 };
 
 #endif // MAINWINDOW_H
